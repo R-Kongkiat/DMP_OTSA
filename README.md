@@ -1,3 +1,1 @@
-# Robust Precision Landing of a Quadrotor with
-Online Temporal Scaling Adaptation of Dynamic
-Movement Primitives
+# Robust Precision Landing of a Quadrotor withOnline Temporal Scaling Adaptation of Dynamic Movement Primitives
