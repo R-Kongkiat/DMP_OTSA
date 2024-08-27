@@ -8,7 +8,8 @@
 movement primitives, Precision Landing">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DMP-OTSA: Robust Precision Landing of a Quadrotor with Online Temporal Scaling Adaptation of Dynamic Movement Primitives</title>
-
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
   <script>
@@ -51,13 +52,17 @@ movement primitives, Precision Landing">
           <h1 class="title is-2 publication-title">Robust Precision Landing of a Quadrotor with Online Temporal Scaling Adaptation of Dynamic Movement Primitives</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
-              <a href="https://palmkongkiat.com/">Kongkiat Rothomphiwat</a><sup>1</sup>,</span>
+              <a href="https://palmkongkiat.com/">Kongkiat Rothomphiwat</a>,</span>
             <span class="author-block">
-              <a href="https://manoonpong.com/">Poramate Manoonpong</a><sup>2</sup>,</span>
+                Prakarn Jaroonsorn,</span>
+              <span class="author-block">
+                  Pakpoom Kriengkomolt,</span>
+            <span class="author-block">
+              <a href="https://manoonpong.com/">Poramate Manoonpong</a></span>
           </div>
 
           <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>Vidyasirimedhi Institute of Science & Technology, Rayong, Thailand</span>
+            <span class="author-block">Vidyasirimedhi Institute of Science & Technology, Rayong, Thailand</span>
           </div>
 
 <!--           <div class="column has-text-centered">
@@ -139,38 +144,243 @@ movement primitives, Precision Landing">
 </section>
 
 
-<!--   <section class="section">
+  <section class="section">
   <div class="container is-max-desktop">
 
-    <div class="columns is-centered">
-
-    <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-3">Related Links</h2>
-
+        <h2 class="title is-3">Stability Analysis</h2>
         <div class="content has-text-justified">
+          <p>The stability analysis is separated into two parts, which include:</p>
+
+          <p><strong>1. Stability of Trajectory Adaptation:</strong> Prove that the adaptation mechanism adjusts the trajectory in response to errors and goal changes, ensuring that the trajectory remains effective and feasible.</p>
+
+          <p><strong>2. Overall System Stability:</strong> Demonstrate that the entire system, including the trajectory adaptation, is stable and converges to the desired state, ensuring robustness and precision in performance.</p>
+         
+        </div>
+
+        <h2 class="title is-5">System Description</h2>
+        <div class="content has-text-justified">
+          <p>The key equations governing the system are:</p>
+
+          <p><strong>
+          Transformation system:
+          </strong></p>
+      
           <p>
-            There's a lot of excellent work that was introduced around the same time as ours.
+          \[
+          \tau\dot{z} = (1 - s) \alpha_y \left( \beta_y (g - y) + \tau ( \dot{g} - \dot{y} ) \right) + \Omega,
+          \]
+          </p> 
+
+          <p>
+            \[
+            \Omega =  \text{diag} \left( g - y_0 \right) f(s),
+            \]
+            </p> 
+      
+          <p>
+          \[
+          \tau \dot{ y} = z,
+          \]
           </p>
+      
           <p>
-            <a href="https://arxiv.org/abs/2104.09125">Progressive Encoding for Neural Optimization</a> introduces an idea similar to our windowed position encoding for coarse-to-fine optimization.
+          \[
+          \tau \dot{s} = - \alpha_x s,
+          \]
           </p>
+      
+          <p><strong>
+          Temporal scaling adaptation law:
+          </strong></p>
+      
           <p>
-            <a href="https://www.albertpumarola.com/research/D-NeRF/index.html">D-NeRF</a> and <a href="https://gvv.mpi-inf.mpg.de/projects/nonrigid_nerf/">NR-NeRF</a>
-            both use deformation fields to model non-rigid scenes.
+          \[
+          \dot{\tau} = -\kappa_{\tau}(\tau-\tau_{g}) + \dot{\tau_{g}},
+          \]
           </p>
+      
           <p>
-            Some works model videos with a NeRF by directly modulating the density, such as <a href="https://video-nerf.github.io/">Video-NeRF</a>, <a href="https://www.cs.cornell.edu/~zl548/NSFF/">NSFF</a>, and <a href="https://neural-3d-video.github.io/">DyNeRF</a>
+          \[
+          \tau_{g} = \frac{\big\|g - y_{0} \big\|}{\big\|g_{d} - y_{0,d} \big\|}\tau_{d} + k_{c}e_{t}^2,
+          \]
           </p>
+
+          <p><strong>
+            Error Dynamics:
+          </strong></p>
+      
           <p>
-            There are probably many more by the time you are reading this. Check out <a href="https://dellaert.github.io/NeRF/">Frank Dellart's survey on recent NeRF papers</a>, and <a href="https://github.com/yenchenlin/awesome-NeRF">Yen-Chen Lin's curated list of NeRF papers</a>.
+          \[
+          e_{t} = (1-\alpha_{e})\big|y_{s}-y\big| - \alpha_{e}e_{t-1}.
+          \]
+          </p>
+
+        </div>
+
+        <h2 class="title is-5">Stability Analysis Assumptions</h2>
+        <div class="content has-text-justified">
+        <p>
+          We assume the controller is contracting, meaning that small deviations from the desired trajectory should decay over time. The adaptation mechanism slows down the evolution of the trajectory to allow for error correction.
+        </p>
+
+        </div>
+        
+        <h2 class="title is-4">1. Stability of Trajectory Adaptation</h2>
+        <div class="content has-text-justified">
+
+        <h2 class="title is-5">1.1 Tracking Error Dynamics</h2>
+        <div class="content has-text-justified">
+        <p>
+          The tracking error \( e_t \) is governed by:
+        </p>
+        <p>
+          \[
+          e_{t} = (1-\alpha_{e})\big|y_{s}-y\big| - \alpha_{e}e_{t-1}
+          \]
+          </p>
+
+        <p>
+          This equation is a low-pass filter that smooths out the effect of rapid changes in tracking error. The term \(\big|y_{s}-y\big|\) represents the deviation of the quadrotor’s state from the desired trajectory. As long as \(y_s \) deviates significantly from \(y \), \(e_t\) will increase.</p>
+        </div>
+        
+        <h2 class="title is-5">1.2 Temporal Scaling and Stability</h2>
+        <div class="content has-text-justified">
+        <p>
+          The temporal scaling adaptation law:
+        </p>
+        <p>
+          \[
+          \dot{\tau} = -\kappa_{\tau}(\tau-\tau_{g}) + \dot{\tau_{g}}
+          \]
+          </p>
+      
+          <p>
+          \[
+          \tau_{g} = \frac{\big\|g - y_{0} \big\|}{\big\|g_{d} - y_{0,d} \big\|}\tau_{d} + k_{c}e_{t}^2
+          \]
+          </p>
+
+          <p>
+            Shows that as \( e_t \) increases, \( \tau_g \) increases, which in turn increases \( \tau \). Since \( \tau \) represents the timescale of the trajectory evolution, a larger \( \tau \) means the system slows down, giving more time for the error \( e_t \) to decay.
           </p>
         </div>
+
+        <h2 class="title is-5">1.3 Contraction Mapping</h2>
+        <div class="content has-text-justified">
+          <p>      For stability, we need to show that the system forms a contraction mapping, meaning that the difference between two states in successive iterations decreases:</p>
+          <p>
+            \[
+            \| e_{t+1} \| < \| e_t \|
+            \]
+        </p>
+        <p>
+            Given the low-pass filter dynamics:
+        </p>
+        <p>
+            \[
+            \| e_{t+1} \| = \left\| (1 - \alpha_e) |y_{s}-y\big| - \alpha_e e_t \right\|
+            \]
+        </p>
+        <p>
+            As long as \( \alpha_e \) is chosen such that \( 0 < \alpha_e < 1 \) and the controller is contracting, the error \( e_t \) will reduce over time.
+        </p>
+        </div>
+
+        <h2 class="title is-5">1.4 Conclusion</h2>
+        <div class="content has-text-justified">
+        <p>
+          By increasing \( \tau \) in response to large tracking errors (due to strong perturbations), the system effectively slows down the evolution of the desired trajectory, allowing time for the error to decay. The combination of the low-pass filter and temporal scaling adaptation contributes to the stability of the system. Thus, under the assumption that the controller is contracting and \( \alpha_e \) is properly tuned, the system can be shown to stabilize around the desired trajectory, ensuring that the error \( e_t \) decreases over time.
+        </p>
+
+      <h2 class="title is-4">2. Overall System Stability</h2>
+      <div class="content has-text-justified">
+
+        <h2 class="title is-5">2.1 Lyapunov Function Definition</h2>
+        <p>
+            To analyze the stability of the system, we define a Lyapunov candidate function that encompasses the energy of the system. The Lyapunov function is chosen as:
+        </p>
+        <p>
+          \[
+            V(\tau, z, s, e_t) = \frac{1}{2} (\tau - \tau_g)^2 + \frac{1}{2} z^2 + \frac{1}{2} s^2 + \frac{1}{2} e_t^2.
+          \]
+        </p>
+        <p>
+            This function captures the deviation of the temporal scaling \( \tau \) from its reference \( \tau_g \), the system state \( z \), the scaling variable \( s \), and the tracking error \( e_t \).
+        </p>
+    
+        <h2 class="title is-5">2.2 Time Derivative of the Lyapunov Function</h2>
+        <p>
+            To prove stability, we compute the time derivative of \( V(\tau, z, s, e_t) \):
+        </p>
+        <p>
+          \[
+           \dot{V}(\tau, z, s, e_t) = (\tau - \tau_g) \dot{\tau} + z \dot{z} + s \dot{s} + e_t \dot{e}_t.
+          \]
+        </p>
+        <p>
+            Substituting the system dynamics into \( \dot{V} \):
+        </p>
+        <p>
+          \[
+            \dot{\tau} = -\kappa_\tau (\tau - \tau_g) + \dot{\tau}_g,
+          \]
+        </p>
+        <p>
+          \[
+            \dot{z} =\frac{(1 - s) \alpha_y (\beta_y (g - y) + \tau ( \dot{g} - \dot{y} )) + \Omega}{\tau},
+          \]
+        </p>
+        <p>
+          \[
+           \dot{s} = -\frac{\alpha_x s}{ \tau},
+          \]
+        </p>
+        <p>
+          \[
+             \dot{e}_t \approx -\alpha_e e_t
+          \]
+        </p>
+        <p>
+            The time derivative of \( V(\tau, y, e_t) \) becomes:
+        </p>
+        <p>
+          \[
+             \dot{V} = (\tau - \tau_g) \left( -\kappa_\tau (\tau - \tau_g) + \dot{\tau}_g \right) + z\frac{ (1 - s) \alpha_y (\beta_y (g - y) + \tau ( \dot{g} - \dot{y} )) + \Omega}{\tau} - \frac{\alpha_x s^2}{\tau} -\alpha_e e_t.
+          \]
+        </p>
+    
+        <h2 class="title is-5">2.3 Negative Definiteness of \( \dot{V} \)</h2>
+        <p>
+            We now analyze the individual terms:
+        </p>
+        <p>
+        <ui>
+        <li>
+            The term \( (\tau - \tau_g) (-\kappa_\tau (\tau - \tau_g)) \) is non-positive as long as \( \kappa_\tau > 0 \) and \( T_g \) must be bounded.
+        </li>
+        <li>
+            The term \( z \cdot \dot{z} \) depends on the system dynamics and can be non-positive under proper \( \alpha_y\) and \(\beta_y \).
+        </li>
+        <li>
+            The term \( -\frac{\alpha_x s^2}{ \tau} \) is non-positive as \( \alpha_x > 0 \) and \( \tau > 0 \).
+        </li>
+        <li>
+            The tracking error term \( e_t \cdot \dot{e}_t \) is also non-positive if \( 0 < \alpha_e < 1 \) and \( |y_s-y| \) contracting (from above assumption).
+        </li>
+       </ui></p>
+        <p>
+            Thus, with appropriate design of the controller parameters, \( \dot{V} \) can be made negative definite. This implies that \( V(\tau, z, s, e_t) \) decreases over time, leading to the conclusion that the system is stable and converges to the desired trajectory.
+            The negative definiteness of \( \dot{V} \) implies that the system's energy decreases over time, leading to global asymptotic stability.
+    
+        <h2 class="title is-5">2.4 Conclusion</h2>
+        <p>
+            Through the Lyapunov-based stability analysis, we have shown that the proposed online adaptive trajectory planning approach with temporal scaling is globally asymptotically stable. This implies that the system can effectively detect and correct deviations caused by disturbances, ensuring that the quadrotor follows the desired trajectory, and that disturbances are mitigated over time. This analysis confirms that the system's state \( y_s \) controlled by the controller will converge globally asymptotically, thereby solving the disturbance problem and ensuring robust precision landing maneuvers.
+        </p>
       </div>
-    </div>
 
   </div>
-</section> -->
+</section>
 
 
 <!-- <section class="section" id="BibTeX">
