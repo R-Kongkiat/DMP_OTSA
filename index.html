@@ -134,9 +134,10 @@ movement primitives, Precision Landing">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Video</h2>
-        <video width="800" height="450" controls>
+        <iframe width="800" height="450" src="https://www.youtube.com/embed/Hq5lKfJByrA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <!-- <video width="800" height="450" controls>
           <source src="https://www.manoonpong.com/DMP-OTSA/video.mp4" type="video/mp4">
-        </video>
+        </video> -->
       </div>
     </div>
     <!--/ Paper video. -->
@@ -372,9 +373,7 @@ movement primitives, Precision Landing">
         <p>
             Thus, with appropriate design of the controller parameters, \( \dot{V} \) can be made negative definite. This implies that \( V(\tau, z, s, e_t) \) decreases over time, leading to the conclusion that the system is stable and converges to the desired trajectory.
             The negative definiteness of \( \dot{V} \) implies that the system's energy decreases over time, leading to global asymptotic stability.
-
-
-          
+    
         <h2 class="title is-5">2.4 Conclusion</h2>
         <p>
             Through the Lyapunov-based stability analysis, we have shown that the proposed online adaptive trajectory planning approach with temporal scaling is globally asymptotically stable. This implies that the system can effectively detect and correct deviations caused by disturbances, ensuring that the quadrotor follows the desired trajectory, and that disturbances are mitigated over time. This analysis confirms that the system's state \( y_s \) controlled by the controller will converge globally asymptotically, thereby solving the disturbance problem and ensuring robust precision landing maneuvers.
